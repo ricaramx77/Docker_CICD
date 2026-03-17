@@ -26,14 +26,14 @@ jobs:
 
       # 3. Build the image
       - name: Build Docker image
-        run: docker build -t Docker_CICD:latest .
+        run: docker build -t docker_cicd:latest .
 
       # 4. Run tests inside the container
       - name: Run tests
-        run: docker run --rm Docker_CICD:latest dotnet test --no-build --verbosity normal
+        run: docker run --rm docker_cicd:latest dotnet test --no-build --verbosity normal
 
       # 5. Tag and push the image to the registry
       - name: Push image to Docker Hub
         run: |
-          docker tag Docker_CICD:latest ricaramx77/Docker_CICD:latest
+          docker tag docker_cicd:latest ricaramx77/Docker_CICD:latest
           docker push ricaramx77/Docker_CICD:latest
