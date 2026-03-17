@@ -1,0 +1,39 @@
+name: CI/CD with Docker
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-test-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Log in to the registry (Docker Hub)
+      # This allows GitHub Actions to authenticate against Docker Hub and gain permission to push images.
+      # Without login, when GitHub Actions tries to run docker push, it will fail because Docker Hub does not allow
+      # pushing images without credentials.
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # 3. Build the image
+      - name: Build Docker image
+        run: docker build -t Docker_CICD:latest .
+
+      # 4. Run tests inside the container
+      - name: Run tests
+        run: docker run --rm Docker_CICD:latest dotnet test --no-build --verbosity normal
+
+      # 5. Tag and push the image to the registry
+      - name: Push image to Docker Hub
+        run: |
+          docker tag Docker_CICD:latest ricaramx77/Docker_CICD:latest
+          docker push ricaramx77/Docker_CICD:latest
