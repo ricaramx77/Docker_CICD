@@ -36,5 +36,5 @@ jobs:
       # 5. Tag and push the image to the registry
       - name: Push image to Docker Hub
         run: |
-          docker tag docker_cicd:latest ricaramx77/Docker_CICD:latest
+          docker tag docker_cicd:latest ricaramx77/docker_cicd:latest
           docker push ricaramx77/Docker_CICD:latest
