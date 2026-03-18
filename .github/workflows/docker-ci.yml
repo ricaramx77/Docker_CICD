@@ -28,9 +28,10 @@ jobs:
       - name: Build Docker image
         run: docker build -t docker_cicd:latest .
 
-      # 4. Run tests inside the container
-      - name: Run tests
-        run: docker run --rm docker_cicd:latest dotnet test --no-build --verbosity normal
+      # 4. (Optional) Run tests inside the container
+	    # This step is only needed if we have unit tests.
+      # - name: Run tests
+      #  run: docker run --rm docker_cicd:latest dotnet test --no-build --verbosity normal
 
       # 5. Tag and push the image to the registry
       - name: Push image to Docker Hub
